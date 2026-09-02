@@ -1,234 +1,131 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+const FECHA_CUMPLE = new Date(2026, 8, 10); // 10 de septiembre de 2026
+const MENSAJES_DIA = [
+    { dia: 0, mensaje: '🌟 "Hoy comienza una semana de triunfos" - Cruz Azul' },
+    { dia: 1, mensaje: '⚽ "El esfuerzo de hoy es el triunfo de mañana" - La Máquina' },
+    { dia: 2, mensaje: '💪 "Los campeones no se rinden, se reinventan" - Cemento' },
+    { dia: 3, mensaje: '🏆 "El equipo que lucha unido, siempre gana" - La Nación' },
+    { dia: 4, mensaje: '🔥 "La garra cementera nos hace invencibles" - ídolo' },
+    { dia: 5, mensaje: '✨ "Cada día es una oportunidad para ser mejor" - Leyenda' },
+    { dia: 6, mensaje: '🎯 "Con trabajo y fe, todo es posible" - Historia Azul' },
+    { dia: 7, mensaje: '🚀 "El cielo es el límite para La Máquina" - Afición' },
+    { dia: 8, mensaje: '🎂 "Se acerca el día más esperado del año" - Celebración' },
+    { dia: 9, mensaje: '🎉 "Mañana es el gran día, ¡prepárate!" - Fiesta' },
+    { dia: 10, mensaje: '🥳 "¡HOY ES MI CUMPLEAÑOS! ¡FELICIDADES!" - 🎂🎉' }
+];
+let temaActual = 0;
+let sonidoActivo = true;
+let intervaloConfeti = null;
+function actualizarCuentaRegresiva() {
+    const ahora = new Date();
+    const diferencia = FECHA_CUMPLE - ahora;
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #003087 0%, #CE1126 50%, #FFFFFF 100%);
-    background-size: 400% 400%;
-    animation: gradiente 10s ease infinite;
-    overflow: hidden;
-    position: relative;
-}
+    if (diferencia <= 0) {
+        document.getElementById('dias').textContent = '🎉';
+        document.getElementById('horas').textContent = '🎉';
+        document.getElementById('minutos').textContent = '🎉';
+        document.getElementById('segundos').textContent = '🎉';
+        document.getElementById('mensaje-dia').textContent = '🥳 ¡HOY ES MI CUMPLEAÑOS! 🎂🎉';
+        document.getElementById('titulo').textContent = '🎂 ¡FELIZ CUMPLEAÑOS! 🎂';
+        if (!document.querySelector('.fuego-artificial')) {
+            setInterval(crearFuegoArtificial, 500);
+        }
+        return;
+    }
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
 
-@keyframes gradiente {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    document.getElementById('dias').textContent = String(dias).padStart(2, '0');
+    document.getElementById('horas').textContent = String(horas).padStart(2, '0');
+    document.getElementById('minutos').textContent = String(minutos).padStart(2, '0');
+    document.getElementById('segundos').textContent = String(segundos).padStart(2, '0');
+    const indiceMensaje = Math.min(Math.floor(dias / 3), MENSAJES_DIA.length - 1);
+    const mensajeDelDia = MENSAJES_DIA[indiceMensaje] || MENSAJES_DIA[0];
+    document.getElementById('mensaje-dia').textContent = mensajeDelDia.mensaje;
+    const colores = ['#003087', '#CE1126', '#FFFFFF', '#003087', '#CE1126'];
+    document.querySelectorAll('.box span').forEach((span, i) => {
+        span.style.color = colores[i % colores.length];
+    });
 }
-#particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.particula {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: flotar 20s infinite linear;
-}
-
-@keyframes flotar {
-    0% { transform: translateY(100vh) scale(0); opacity: 0; }
-    10% { opacity: 0.3; }
-    90% { opacity: 0.3; }
-    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-}
-
-/* Contenedor principal */
-.container {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px);
-    padding: 3rem 2rem;
-    border-radius: 40px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 80px rgba(255,255,255,0.1);
-    text-align: center;
-    max-width: 850px;
-    width: 95%;
-    z-index: 1;
-    border: 2px solid rgba(255,255,255,0.2);
-    animation: aparecer 1.5s ease-out;
-}
-
-@keyframes aparecer {
-    from { opacity: 0; transform: scale(0.8) rotate(-5deg); }
-    to { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-
-h1 {
-    font-size: 2.5rem;
-    color: #FFFFFF;
-    margin-bottom: 2rem;
-    text-shadow: 0 0 30px rgba(0,48,135,0.8), 0 0 60px rgba(206,17,38,0.5);
-    animation: titilar 2s infinite alternate;
-    letter-spacing: 2px;
-}
-
-@keyframes titilar {
-    from { text-shadow: 0 0 20px rgba(0,48,135,0.8), 0 0 40px rgba(206,17,38,0.3); }
-    to { text-shadow: 0 0 40px rgba(0,48,135,1), 0 0 80px rgba(206,17,38,0.6), 0 0 120px rgba(255,255,255,0.3); }
-}
-.countdown {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    margin: 2rem 0;
-}
-
-.box {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 1.5rem 1.8rem;
-    border-radius: 25px;
-    min-width: 100px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255,255,255,0.3);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-    animation: rebote 3s infinite;
-}
-
-.box:hover {
-    transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    border-color: #CE1126;
-}
-
-@keyframes rebote {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-.box span {
-    font-size: 3.5rem;
-    font-weight: bold;
-    color: #FFFFFF;
-    display: block;
-    text-shadow: 0 0 20px rgba(0,48,135,0.8);
-    font-family: 'Arial Black', sans-serif;
-}
-
-.box:nth-child(1) span { color: #003087; }  /* Días - Azul */
-.box:nth-child(2) span { color: #CE1126; }  /* Horas - Rojo */
-.box:nth-child(3) span { color: #FFFFFF; }  /* Minutos - Blanco */
-.box:nth-child(4) span { color: #003087; }  /* Segundos - Azul */
-
-.box p {
-    font-size: 1rem;
-    color: rgba(255,255,255,0.9);
-    margin-top: 8px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: bold;
-}
-.mensaje-dia {
-    margin: 2rem auto;
-    padding: 1.2rem 2rem;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #FFFFFF;
-    background: linear-gradient(135deg, rgba(0,48,135,0.7), rgba(206,17,38,0.7));
-    border-radius: 60px;
-    display: inline-block;
-    border: 2px solid rgba(255,255,255,0.3);
-    backdrop-filter: blur(5px);
-    animation: pulsar 2s infinite;
-    min-height: 80px;
-    max-width: 90%;
-}
-
-@keyframes pulsar {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-}
-.botones {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 1.5rem 0;
-}
-
-.btn {
-    padding: 12px 28px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-    background: linear-gradient(135deg, #003087, #CE1126);
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    letter-spacing: 1px;
-}
-
-.btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    background: linear-gradient(135deg, #CE1126, #003087);
-}
-
-.btn:active {
-    transform: scale(0.95);
-}
-.escudo {
-    font-size: 3rem;
-    margin-top: 1.5rem;
-    animation: girar 10s infinite linear;
-    text-shadow: 0 0 30px rgba(255,255,255,0.5);
-}
-
-@keyframes girar {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-.confeti {
-    position: fixed;
-    top: -10px;
-    font-size: 2rem;
-    animation: caer 3s linear forwards;
-    pointer-events: none;
-    z-index: 999;
-}
-
-@keyframes caer {
-    to {
-        transform: translateY(110vh) rotate(720deg);
-        opacity: 0;
+function crearParticulas() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+        const particula = document.createElement('div');
+        particula.className = 'particula';
+        particula.style.left = Math.random() * 100 + '%';
+        particula.style.animationDuration = (15 + Math.random() * 20) + 's';
+        particula.style.animationDelay = (Math.random() * 20) + 's';
+        particula.style.width = (2 + Math.random() * 5) + 'px';
+        particula.style.height = particula.style.width;
+        container.appendChild(particula);
     }
 }
-.fuego-artificial {
-    position: fixed;
-    font-size: 4rem;
-    animation: explotar 2s ease-out forwards;
-    pointer-events: none;
-    z-index: 999;
+crearParticulas();
+function activarConfeti() {
+    const emojis = ['🎉', '🎊', '⭐', '🏆', '⚽', '💙', '❤️', '✨'];
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confeti = document.createElement('div');
+            confeti.className = 'confeti';
+            confeti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            confeti.style.left = Math.random() * 100 + '%';
+            confeti.style.fontSize = (1 + Math.random() * 2) + 'rem';
+            confeti.style.animationDuration = (2 + Math.random() * 3) + 's';
+            document.body.appendChild(confeti);
+            setTimeout(() => confeti.remove(), 5000);
+        }, i * 30);
+    }
 }
-
-@keyframes explotar {
-    0% { transform: scale(0) rotate(0deg); opacity: 1; }
-    50% { transform: scale(3) rotate(180deg); opacity: 1; }
-    100% { transform: scale(5) rotate(360deg); opacity: 0; }
+function crearFuegoArtificial() {
+    const emojis = ['🎆', '🎇', '✨', '💥', '🌟', '⚽', '🏆'];
+    for (let i = 0; i < 8; i++) {
+        const fuego = document.createElement('div');
+        fuego.className = 'fuego-artificial';
+        fuego.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        fuego.style.left = (10 + Math.random() * 80) + '%';
+        fuego.style.top = (10 + Math.random() * 80) + '%';
+        document.body.appendChild(fuego);
+        setTimeout(() => fuego.remove(), 3000);
+    }
 }
-@media (max-width: 600px) {
-    h1 { font-size: 1.8rem; }
-    .box { padding: 1rem; min-width: 70px; }
-    .box span { font-size: 2.5rem; }
-    .mensaje-dia { font-size: 1.2rem; padding: 1rem; }
-    .btn { padding: 8px 16px; font-size: 0.9rem; }
+function cambiarTema() {
+    const temas = [
+        { bg: 'linear-gradient(135deg, #003087 0%, #CE1126 50%, #FFFFFF 100%)', 
+          shadow: '0 0 40px rgba(0,48,135,0.8)' },
+        { bg: 'linear-gradient(135deg, #CE1126 0%, #003087 50%, #FFFFFF 100%)',
+          shadow: '0 0 40px rgba(206,17,38,0.8)' },
+        { bg: 'linear-gradient(135deg, #FFFFFF 0%, #003087 50%, #CE1126 100%)',
+          shadow: '0 0 40px rgba(255,255,255,0.8)' }
+    ];
+    
+    temaActual = (temaActual + 1) % temas.length;
+    const tema = temas[temaActual];
+    document.body.style.background = tema.bg;
+    document.querySelector('.container').style.boxShadow = tema.shadow;
 }
+function cambiarFraseManual() {
+    const mensajes = [
+        '💪 "El que persevera, alcanza" - La Máquina',
+        '⚽ "El fútbol es pasión, entrega y corazón"',
+        '🏆 "Cada día es una final" - Cruz Azul',
+        '🔥 "La garra cementera nos hace grandes"',
+        '🌟 "El equipo de México, el equipo del pueblo"',
+        '🎯 "Con fe y trabajo, todo se logra"',
+        '🚀 "La historia se escribe con esfuerzo"',
+        '💙 "Azul de corazón, rojo de pasión"'
+    ];
+    const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
+    document.getElementById('mensaje-dia').textContent = mensaje;
+}
+function toggleSonido() {
+    sonidoActivo = !sonidoActivo;
+    document.getElementById('btn-musica').textContent = sonidoActivo ? '🔇 Silenciar' : '🔊 Activar Sonido';
+    alert(sonidoActivo ? '🔊 Sonido activado' : '🔇 Sonido desactivado');
+}
+document.getElementById('btn-confeti').addEventListener('click', activarConfeti);
+document.getElementById('btn-tema').addEventListener('click', cambiarTema);
+document.getElementById('btn-mensaje').addEventListener('click', cambiarFraseManual);
+document.getElementById('btn-musica').addEventListener('click', toggleSonido);
+actualizarCuentaRegresiva();
+setInterval(actualizarCuentaRegresiva, 1000);
