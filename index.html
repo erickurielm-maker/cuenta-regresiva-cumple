@@ -7,37 +7,37 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div id="particles"></div>
     <div class="container">
-        <h1 id="titulo">⚽ ¡Faltan para mi cumpleaños! 🎂</h1>
+        <h1>⚽ ¡Faltan para mi cumpleaños! 🎂</h1>
+
         <div class="countdown">
-            <div class="box" id="box-dias">
+            <div class="box">
                 <span id="dias">00</span>
                 <p>Días</p>
             </div>
-            <div class="box" id="box-horas">
+            <div class="box">
                 <span id="horas">00</span>
                 <p>Horas</p>
             </div>
-            <div class="box" id="box-minutos">
+            <div class="box">
                 <span id="minutos">00</span>
                 <p>Minutos</p>
             </div>
-            <div class="box" id="box-segundos">
+            <div class="box">
                 <span id="segundos">00</span>
                 <p>Segundos</p>
             </div>
         </div>
+
         <div id="mensaje-dia" class="mensaje-dia">
-            💪 "El esfuerzo de hoy es el triunfo de mañana"
+            💪 El esfuerzo de hoy es el triunfo de mañana
         </div>
+
         <div class="botones">
-            <button id="btn-confeti" class="btn">🎊 Activar Confeti</button>
-            <button id="btn-tema" class="btn">🔵 Cambiar Tema</button>
-            <button id="btn-mensaje" class="btn">💬 Nueva Frase</button>
-            <button id="btn-musica" class="btn">🔇 Silenciar</button>
+            <button onclick="activarConfeti()">🎊 Activar Confeti</button>
+            <button onclick="cambiarTema()">🔵 Cambiar Tema</button>
+            <button onclick="nuevaFrase()">💬 Nueva Frase</button>
         </div>
-        <div class="escudo">⚽🏆⚽</div>
     </div>
 
     <script src="script.js"></script>
