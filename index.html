@@ -3,32 +3,68 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Cuenta Regresiva - Cumpleaños 10 Sep</title>
+    <title>🎂 Feliz Cumpleaños Saúl Zárate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+    
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>🎂 ¡Faltan para mi cumpleaños! 🎂</h1>
-        <div class="countdown">
-            <div class="box">
-                <span id="dias">00</span>
-                <p>Días</p>
+    <canvas id="canvas-particulas"></canvas>
+    <div id="globos-container"></div>
+    <main class="container" id="main-container">
+        <header class="header">
+            <div class="badge">🎯 CONTADOR: </div>
+            <h1 class="nombre-principal">
+                <span class="text-gradient">Saúl Zárate</span>
+            </h1>
+            <p class="sub-nombre">Tu legado continúa creciendo</p>
+        </header>
+        <section class="countdown">
+            <div class="box" id="box-dias">
+                <span class="numero" id="dias">00</span>
+                <span class="etiqueta">Días</span>
+                <div class="barra-progreso"></div>
             </div>
-            <div class="box">
-                <span id="horas">00</span>
-                <p>Horas</p>
+            <div class="box" id="box-horas">
+                <span class="numero" id="horas">00</span>
+                <span class="etiqueta">Horas</span>
+                <div class="barra-progreso"></div>
             </div>
-            <div class="box">
-                <span id="minutos">00</span>
-                <p>Minutos</p>
+            <div class="box" id="box-minutos">
+                <span class="numero" id="minutos">00</span>
+                <span class="etiqueta">Minutos</span>
+                <div class="barra-progreso"></div>
             </div>
-            <div class="box">
-                <span id="segundos">00</span>
-                <p>Segundos</p>
+            <div class="box" id="box-segundos">
+                <span class="numero" id="segundos">00</span>
+                <span class="etiqueta">Segundos</span>
+                <div class="barra-progreso"></div>
             </div>
-        </div>
-        <p id="mensaje" class="mensaje"></p>
-    </div>
+        </section>
+        <section class="frase-section">
+            <div class="frase-container">
+                <div class="frase-icon">💼</div>
+                <p id="mensaje-dia" class="frase-texto">
+                    "El éxito no es casualidad, es la suma de decisiones correctas"
+                </p>
+            </div>
+        </section>
+        <section class="acciones">
+            <button class="btn btn-primary" onclick="activarConfeti()">
+                <span class="icon">🎊</span> Celebrar
+            </button>
+            <button class="btn btn-secondary" onclick="activarGlobos()">
+                <span class="icon">🎈</span> Globos
+            </button>
+            <button class="btn btn-tertiary" onclick="cambiarFraseManual()">
+                <span class="icon">💬</span> Nueva Frase
+            </button>
+            <button class="btn btn-quaternary" onclick="cambiarTema()">
+                <span class="icon">🎨</span> Tema
+            </button>
+        </section>
+    </main>
+    <div id="confeti-container"></div>
     <script src="script.js"></script>
 </body>
 </html>
